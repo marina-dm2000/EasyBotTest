@@ -1,10 +1,10 @@
 spring:
   datasource:
-    #url: jdbc:h2:~/test
-    url: jdbc:postgresql://localhost:5432/easybot-test
+    url: jdbc:h2:mem:test
+    #url: jdbc:postgresql://localhost:5432/easybot-test
     username: marina
     password: 28052000
-    #driverClassName: org.h2.Driver
-  #jpa:
-    #database-platform: org.hibernate.dialect.H2Dialect
-    driver-class-name: org.postgresql.Driver
+    driverClassName: org.h2.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    #driver-class-name: org.postgresql.Driver

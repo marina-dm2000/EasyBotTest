@@ -24,7 +24,7 @@ public class HardDisk {
     private double price;
 
     @Column(name = "count", nullable = false)
-    private int count;
+    private static int count;
 
     @Column(name = "volume", nullable = false)
     private int volume;

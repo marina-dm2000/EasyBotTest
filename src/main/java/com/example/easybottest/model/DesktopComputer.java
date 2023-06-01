@@ -24,9 +24,10 @@ public class DesktopComputer {
     private double price;
 
     @Column(name = "count", nullable = false)
-    private int count;
+    private static int count;
 
     @Column(name = "form-factor", nullable = false, length = 25)
-    private String formFactor;
+    @Enumerated(EnumType.STRING)
+    private FormFactor formFactor;
 
 }
