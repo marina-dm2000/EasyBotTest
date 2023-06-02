@@ -1,21 +1,18 @@
 package com.example.easybottest.service;
 
-<<<<<<< HEAD
-public class DesktopComputerService {
-=======
 import com.example.easybottest.dto.DesktopComputerDTO;
 import com.example.easybottest.model.DesktopComputer;
 import com.example.easybottest.repository.DesktopComputerRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
-@Transactional
 public class DesktopComputerService extends ProductService<DesktopComputer, DesktopComputerRepository> {
     private final DesktopComputerRepository desktopComputerRepository;
 
-    public DesktopComputerService(DesktopComputerRepository productRepository, DesktopComputerRepository desktopComputerRepository) {
-        super(productRepository);
+    public DesktopComputerService(DesktopComputerRepository desktopComputerRepository) {
+        super(desktopComputerRepository);
         this.desktopComputerRepository = desktopComputerRepository;
     }
 
@@ -50,5 +47,8 @@ public class DesktopComputerService extends ProductService<DesktopComputer, Desk
         desktop.setCount(updateRequest.getCount());
         return desktopComputerRepository.save(desktop);
     }
->>>>>>> origin/master
+
+    public List<DesktopComputer> findAll() {
+        return desktopComputerRepository.findAll();
+    }
 }

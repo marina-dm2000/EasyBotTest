@@ -8,6 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 @RequestMapping("/api/desktops")
 public class DesktopComputerController {
@@ -35,10 +38,19 @@ public class DesktopComputerController {
     }
 
     @GetMapping("/{desktopId}")
-    public ResponseEntity<DesktopComputerDTO> getDesktopById(@PathVariable Long desktopId) {
+    public ResponseEntity<DesktopComputerDTO> findDesktopById(@PathVariable Long desktopId) {
         DesktopComputer desktop = desktopComputerService.getProductById(desktopId);
         DesktopComputerDTO desktopResponseDTO = convertToDesktopResponseDTO(desktop);
         return ResponseEntity.ok(desktopResponseDTO);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<DesktopComputerDTO>> findAll() {
+        List<DesktopComputer> desktopComputers = desktopComputerService.findAll();
+        List<DesktopComputerDTO> commentResponseDTOs = desktopComputers.stream()
+                .map(this::convertToDesktopResponseDTO)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(commentResponseDTOs);
     }
 
     private DesktopComputerDTO convertToDesktopResponseDTO(DesktopComputer desktopComputer) {
