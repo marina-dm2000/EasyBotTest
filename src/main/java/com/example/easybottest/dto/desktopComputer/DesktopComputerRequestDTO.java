@@ -17,4 +17,7 @@ public class DesktopComputerRequestDTO {
 
     @NotBlank
     private FormFactor formFactor;
+
+    @NotBlank
+    private int count;
 }

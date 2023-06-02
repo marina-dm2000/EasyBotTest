@@ -1,32 +1,22 @@
 package com.example.easybottest.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "hard-disk")
-public class HardDisk {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
-    private Long id;
-
-    @Column(name = "serial-number", nullable = false)
-    private Long serialNumber;
-
-    @Column(name = "fabricator", nullable = false)
-    private String fabricator;
-
-    @Column(name = "price", nullable = false)
-    private double price;
-
-    @Column(name = "count", nullable = false)
-    private static int count;
+@NoArgsConstructor
+@AllArgsConstructor
+public class HardDisk extends Product {
 
     @Column(name = "volume", nullable = false)
     private int volume;
 
+    @Builder
+    public HardDisk(Long id, Long serialNumber, String fabricator, double price, int count, int volume) {
+        super(id, ProductType.HARD_DISK, serialNumber, fabricator, price, count);
+        this.volume = volume;
+    }
 }
