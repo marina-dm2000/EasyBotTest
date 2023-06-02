@@ -37,7 +37,7 @@ public class DesktopComputerController {
     }
 
     @GetMapping("/{desktopId}")
-    public ResponseEntity<DesktopComputerResponseDTO> getPostById(@PathVariable Long desktopId) {
+    public ResponseEntity<DesktopComputerResponseDTO> getDesktopById(@PathVariable Long desktopId) {
         DesktopComputer desktop = desktopComputerService.getProductById(desktopId);
         DesktopComputerResponseDTO desktopResponseDTO = convertToDesktopResponseDTO(desktop);
         return ResponseEntity.ok(desktopResponseDTO);
