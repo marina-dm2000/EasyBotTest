@@ -1,32 +1,22 @@
 package com.example.easybottest.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "screen")
-public class Screen {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
-    private Long id;
-
-    @Column(name = "serial-number", nullable = false)
-    private Long serialNumber;
-
-    @Column(name = "fabricator", nullable = false)
-    private String fabricator;
-
-    @Column(name = "price", nullable = false)
-    private double price;
-
-    @Column(name = "count", nullable = false)
-    private static int count;
+@NoArgsConstructor
+@AllArgsConstructor
+public class Screen extends Product {
 
     @Column(name = "diagonal", nullable = false)
     private int diagonal;
 
+    @Builder
+    public Screen(Long id, Long serialNumber, String fabricator, double price, int count, int diagonal) {
+        super(id, ProductType.SCREEN, serialNumber, fabricator, price, count);
+        this.diagonal = diagonal;
+    }
 }

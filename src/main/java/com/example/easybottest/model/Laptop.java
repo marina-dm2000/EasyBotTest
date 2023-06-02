@@ -1,32 +1,23 @@
 package com.example.easybottest.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "laptop")
-public class Laptop {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
-    private Long id;
-
-    @Column(name = "serial-number", nullable = false)
-    private Long serialNumber;
-
-    @Column(name = "fabricator", nullable = false)
-    private String fabricator;
-
-    @Column(name = "price", nullable = false)
-    private double price;
-
-    @Column(name = "count", nullable = false)
-    private static int count;
+@AllArgsConstructor
+@NoArgsConstructor
+public class Laptop extends Product {
 
     @Column(name = "size", nullable = false)
-    private int size;
+    @Enumerated(EnumType.STRING)
+    private Size size;
 
+    @Builder
+    public Laptop(Long id, Long serialNumber, String fabricator, double price, int count, Size size) {
+        super(id, ProductType.LAPTOP, serialNumber, fabricator, price, count);
+        this.size = size;
+    }
 }
