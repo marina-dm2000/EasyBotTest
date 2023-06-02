@@ -8,5 +8,4 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 public interface DesktopComputerRepository extends ProductRepository<DesktopComputer> {
-    List<DesktopComputer> findByFormFactor(FormFactor formFactor);
 }
