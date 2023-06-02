@@ -1,17 +1,16 @@
-package com.example.easybottest.dto.desktopComputer;
+package com.example.easybottest.dto;
 
 import com.example.easybottest.model.FormFactor;
-import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Data;
 
 @Data
 @Builder
-public class DesktopComputerResponseDTO {
+public class DesktopComputerDTO {
     private Long id;
     private Long serialNumber;
     private String fabricator;
     private double price;
-    private FormFactor formFactor;
     private int count;
+    private FormFactor formFactor;
 }

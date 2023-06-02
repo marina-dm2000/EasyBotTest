@@ -1,10 +1,8 @@
 package com.example.easybottest.service;
 
-import com.example.easybottest.dto.desktopComputer.DesktopComputerRequestDTO;
-import com.example.easybottest.dto.desktopComputer.DesktopComputerUpdateRequest;
+import com.example.easybottest.dto.DesktopComputerDTO;
 import com.example.easybottest.model.DesktopComputer;
 import com.example.easybottest.repository.DesktopComputerRepository;
-import org.springdoc.api.OpenApiResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,7 +21,7 @@ public class DesktopComputerService extends ProductService<DesktopComputer, Desk
     }
 
     public DesktopComputer createDesktopComputer(
-            DesktopComputerRequestDTO desktopRequestDTO) {
+            DesktopComputerDTO desktopRequestDTO) {
         DesktopComputer desktop = DesktopComputer
                 .builder()
                 .serialNumber(desktopRequestDTO.getSerialNumber())
@@ -41,7 +39,7 @@ public class DesktopComputerService extends ProductService<DesktopComputer, Desk
                 .orElseThrow(() -> new OpenApiResourceNotFoundException("Desktop computer not found with ID: " + desktopId));
     }*/
 
-    public DesktopComputer updateDesktop(Long desktopId, DesktopComputerUpdateRequest updateRequest) {
+    public DesktopComputer updateDesktop(Long desktopId, DesktopComputerDTO updateRequest) {
         DesktopComputer desktop = getProductById(desktopId);
         desktop.setFabricator(updateRequest.getFabricator());
         desktop.setPrice(updateRequest.getPrice());

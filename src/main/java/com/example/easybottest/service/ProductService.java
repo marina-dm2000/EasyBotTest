@@ -24,5 +24,4 @@ public abstract class ProductService<T extends Product, E extends ProductReposit
         return productRepository.findByProductType(type);
     }
 
-
 }
