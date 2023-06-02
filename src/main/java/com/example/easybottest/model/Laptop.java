@@ -28,5 +28,4 @@ public class Laptop {
 
     @Column(name = "size", nullable = false)
     private int size;
-
 }
