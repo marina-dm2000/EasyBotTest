@@ -32,8 +32,8 @@ public class DesktopComputerController {
             @PathVariable Long desktopId,
             @Valid @RequestBody DesktopComputerUpdateRequest updateRequest) {
         DesktopComputer updatedDesktop = desktopComputerService.updateDesktop(desktopId, updateRequest);
-        DesktopComputerResponseDTO postResponseDTO = convertToDesktopResponseDTO(updatedDesktop);
-        return ResponseEntity.ok(postResponseDTO);
+        DesktopComputerResponseDTO desktopResponseDTO = convertToDesktopResponseDTO(updatedDesktop);
+        return ResponseEntity.ok(desktopResponseDTO);
     }
 
     @GetMapping("/{desktopId}")
