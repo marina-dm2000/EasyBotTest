@@ -1,11 +1,10 @@
 package com.example.easybottest.service;
 
-import com.example.easybottest.dto.DesktopComputerDTO;
+import com.example.easybottest.dto.desktopComputer.DesktopComputerRequestDTO;
+import com.example.easybottest.dto.desktopComputer.DesktopComputerUpdateRequest;
 import com.example.easybottest.model.DesktopComputer;
 import com.example.easybottest.repository.DesktopComputerRepository;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class DesktopComputerService extends ProductService<DesktopComputer, DesktopComputerRepository> {
@@ -21,7 +20,7 @@ public class DesktopComputerService extends ProductService<DesktopComputer, Desk
     }
 
     public DesktopComputer createDesktopComputer(
-            DesktopComputerDTO desktopRequestDTO) {
+            DesktopComputerRequestDTO desktopRequestDTO) {
         DesktopComputer desktop = DesktopComputer
                 .builder()
                 .serialNumber(desktopRequestDTO.getSerialNumber())
@@ -34,21 +33,12 @@ public class DesktopComputerService extends ProductService<DesktopComputer, Desk
         return desktopComputerRepository.save(desktop);
     }
 
-    /*public DesktopComputer getDesktopComputerById(Long desktopId) {
-        return desktopComputerRepository.findById(desktopId)
-                .orElseThrow(() -> new OpenApiResourceNotFoundException("Desktop computer not found with ID: " + desktopId));
-    }*/
-
-    public DesktopComputer updateDesktop(Long desktopId, DesktopComputerDTO updateRequest) {
+    public DesktopComputer updateDesktop(Long desktopId, DesktopComputerUpdateRequest updateRequest) {
         DesktopComputer desktop = getProductById(desktopId);
         desktop.setFabricator(updateRequest.getFabricator());
         desktop.setPrice(updateRequest.getPrice());
         desktop.setFormFactor(updateRequest.getFormFactor());
         desktop.setCount(updateRequest.getCount());
         return desktopComputerRepository.save(desktop);
-    }
-
-    public List<DesktopComputer> findAll() {
-        return desktopComputerRepository.findAll();
     }
 }

@@ -1,6 +1,8 @@
 package com.example.easybottest.controller;
 
-import com.example.easybottest.dto.DesktopComputerDTO;
+import com.example.easybottest.dto.desktopComputer.DesktopComputerRequestDTO;
+import com.example.easybottest.dto.desktopComputer.DesktopComputerResponseDTO;
+import com.example.easybottest.dto.desktopComputer.DesktopComputerUpdateRequest;
 import com.example.easybottest.model.DesktopComputer;
 import com.example.easybottest.service.DesktopComputerService;
 import jakarta.validation.Valid;
@@ -21,40 +23,40 @@ public class DesktopComputerController {
     }
 
     @PostMapping
-    public ResponseEntity<DesktopComputerDTO> createDesktopComputer(
-            @Valid @RequestBody DesktopComputerDTO desktopComputerRequestDTO) {
+    public ResponseEntity<DesktopComputerResponseDTO> createDesktopComputer(
+            @Valid @RequestBody DesktopComputerRequestDTO desktopComputerRequestDTO) {
         DesktopComputer desktopComputer = desktopComputerService.createDesktopComputer(desktopComputerRequestDTO);
-        DesktopComputerDTO responseDTO = convertToDesktopResponseDTO(desktopComputer);
+        DesktopComputerResponseDTO responseDTO = convertToDesktopResponseDTO(desktopComputer);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
     }
 
-    @PutMapping("/{desktopId}")
-    public ResponseEntity<DesktopComputerDTO> updateDesktop(
+    @PatchMapping("/{desktopId}")
+    public ResponseEntity<DesktopComputerResponseDTO> updateDesktop(
             @PathVariable Long desktopId,
-            @Valid @RequestBody DesktopComputerDTO updateRequest) {
+            @Valid @RequestBody DesktopComputerUpdateRequest updateRequest) {
         DesktopComputer updatedDesktop = desktopComputerService.updateDesktop(desktopId, updateRequest);
-        DesktopComputerDTO desktopResponseDTO = convertToDesktopResponseDTO(updatedDesktop);
+        DesktopComputerResponseDTO desktopResponseDTO = convertToDesktopResponseDTO(updatedDesktop);
         return ResponseEntity.ok(desktopResponseDTO);
     }
 
     @GetMapping("/{desktopId}")
-    public ResponseEntity<DesktopComputerDTO> findDesktopById(@PathVariable Long desktopId) {
+    public ResponseEntity<DesktopComputerResponseDTO> findDesktopById(@PathVariable Long desktopId) {
         DesktopComputer desktop = desktopComputerService.getProductById(desktopId);
-        DesktopComputerDTO desktopResponseDTO = convertToDesktopResponseDTO(desktop);
+        DesktopComputerResponseDTO desktopResponseDTO = convertToDesktopResponseDTO(desktop);
         return ResponseEntity.ok(desktopResponseDTO);
     }
 
     @GetMapping
-    public ResponseEntity<List<DesktopComputerDTO>> findAll() {
-        List<DesktopComputer> desktopComputers = desktopComputerService.findAll();
-        List<DesktopComputerDTO> commentResponseDTOs = desktopComputers.stream()
+    public ResponseEntity<List<DesktopComputerResponseDTO>> findAll() {
+        List<DesktopComputer> desktopComputers = desktopComputerService.findAllProduct();
+        List<DesktopComputerResponseDTO> commentResponseDTOs = desktopComputers.stream()
                 .map(this::convertToDesktopResponseDTO)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(commentResponseDTOs);
     }
 
-    private DesktopComputerDTO convertToDesktopResponseDTO(DesktopComputer desktopComputer) {
-        return DesktopComputerDTO.
+    private DesktopComputerResponseDTO convertToDesktopResponseDTO(DesktopComputer desktopComputer) {
+        return DesktopComputerResponseDTO.
                 builder()
                 .id(desktopComputer.getId())
                 .serialNumber(desktopComputer.getSerialNumber())
