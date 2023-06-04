@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class DesktopComputerUpdateRequest {
+public class DesktopComputerUpdateRequestDTO {
     private String fabricator;
     private double price;
     private FormFactor formFactor;

@@ -44,7 +44,7 @@ public class DesktopComputerControllerTest {
 
     @Test
     public void testUpdateDesktop() throws Exception {
-        mockMvc.perform(put("/api/desktops/1")
+        mockMvc.perform(patch("/api/desktops/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"fabricator\": \"Germany\"}"))
                 .andExpect(status().isOk());

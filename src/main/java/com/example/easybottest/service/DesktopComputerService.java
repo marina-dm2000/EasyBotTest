@@ -1,7 +1,7 @@
 package com.example.easybottest.service;
 
 import com.example.easybottest.dto.desktopComputer.DesktopComputerRequestDTO;
-import com.example.easybottest.dto.desktopComputer.DesktopComputerUpdateRequest;
+import com.example.easybottest.dto.desktopComputer.DesktopComputerUpdateRequestDTO;
 import com.example.easybottest.model.DesktopComputer;
 import com.example.easybottest.repository.DesktopComputerRepository;
 import org.springframework.stereotype.Service;
@@ -33,7 +33,7 @@ public class DesktopComputerService extends ProductService<DesktopComputer, Desk
         return desktopComputerRepository.save(desktop);
     }
 
-    public DesktopComputer updateDesktop(Long desktopId, DesktopComputerUpdateRequest updateRequest) {
+    public DesktopComputer updateDesktop(Long desktopId, DesktopComputerUpdateRequestDTO updateRequest) {
         DesktopComputer desktop = getProductById(desktopId);
         desktop.setFabricator(updateRequest.getFabricator());
         desktop.setPrice(updateRequest.getPrice());

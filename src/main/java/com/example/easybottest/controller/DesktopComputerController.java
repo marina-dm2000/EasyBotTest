@@ -2,7 +2,7 @@ package com.example.easybottest.controller;
 
 import com.example.easybottest.dto.desktopComputer.DesktopComputerRequestDTO;
 import com.example.easybottest.dto.desktopComputer.DesktopComputerResponseDTO;
-import com.example.easybottest.dto.desktopComputer.DesktopComputerUpdateRequest;
+import com.example.easybottest.dto.desktopComputer.DesktopComputerUpdateRequestDTO;
 import com.example.easybottest.model.DesktopComputer;
 import com.example.easybottest.service.DesktopComputerService;
 import jakarta.validation.Valid;
@@ -33,7 +33,7 @@ public class DesktopComputerController {
     @PatchMapping("/{desktopId}")
     public ResponseEntity<DesktopComputerResponseDTO> updateDesktop(
             @PathVariable Long desktopId,
-            @Valid @RequestBody DesktopComputerUpdateRequest updateRequest) {
+            @Valid @RequestBody DesktopComputerUpdateRequestDTO updateRequest) {
         DesktopComputer updatedDesktop = desktopComputerService.updateDesktop(desktopId, updateRequest);
         DesktopComputerResponseDTO desktopResponseDTO = convertToDesktopResponseDTO(updatedDesktop);
         return ResponseEntity.ok(desktopResponseDTO);
@@ -49,10 +49,10 @@ public class DesktopComputerController {
     @GetMapping
     public ResponseEntity<List<DesktopComputerResponseDTO>> findAll() {
         List<DesktopComputer> desktopComputers = desktopComputerService.findAllProduct();
-        List<DesktopComputerResponseDTO> commentResponseDTOs = desktopComputers.stream()
+        List<DesktopComputerResponseDTO> desktopComputerResponseDTOs = desktopComputers.stream()
                 .map(this::convertToDesktopResponseDTO)
                 .collect(Collectors.toList());
-        return ResponseEntity.ok(commentResponseDTOs);
+        return ResponseEntity.ok(desktopComputerResponseDTOs);
     }
 
     private DesktopComputerResponseDTO convertToDesktopResponseDTO(DesktopComputer desktopComputer) {
