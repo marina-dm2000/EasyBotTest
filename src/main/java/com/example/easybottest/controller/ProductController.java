@@ -22,7 +22,7 @@ public class ProductController {
 
     @GetMapping("/type/{productType}")
     public <T extends Product> ResponseEntity<List<T>> getAllByProductType(@PathVariable String productType) {
-        List<T> products = productService.getAllByProductType(convertNameToProductType(productType));
+        List<T> products = productService.getAllByProductType(ProductType.convertNameToProductType(productType));
         return ResponseEntity.ok(products);
     }
 
@@ -30,12 +30,5 @@ public class ProductController {
     public <T extends Product> ResponseEntity<List<T>> getBySerialNumber(@PathVariable Long serialNumber) {
         List<T> products = productService.getBySerialNumber(serialNumber);
         return ResponseEntity.ok(products);
-    }
-
-    private static ProductType convertNameToProductType(String name) {
-        return Arrays.stream(ProductType.values())
-                .filter(type -> Objects.equals(name, type.getName()))
-                .findAny()
-                .orElseThrow(IllegalArgumentException::new);
     }
 }
