@@ -6,6 +6,7 @@ import com.example.easybottest.dto.laptop.LaptopUpdateRequestDTO;
 import com.example.easybottest.model.Laptop;
 import com.example.easybottest.service.LaptopService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,12 +16,9 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/laptops")
+@RequiredArgsConstructor
 public class LaptopController {
     private final LaptopService laptopService;
-
-    public LaptopController(LaptopService laptopService) {
-        this.laptopService = laptopService;
-    }
 
     @PostMapping
     public ResponseEntity<LaptopResponseDTO> createLaptop(
@@ -48,7 +46,7 @@ public class LaptopController {
 
     @GetMapping
     public ResponseEntity<List<LaptopResponseDTO>> findAll() {
-        List<Laptop> laptops = laptopService.findAllProduct();
+        List<Laptop> laptops = laptopService.findAll();
         List<LaptopResponseDTO> laptopResponseDTOs = laptops.stream()
                 .map(this::convertToLaptopResponseDTO)
                 .collect(Collectors.toList());

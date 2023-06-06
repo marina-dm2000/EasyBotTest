@@ -12,7 +12,7 @@ import lombok.*;
 public class Laptop extends Product {
 
     @Column(name = "size", nullable = false)
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.ORDINAL)
     private Size size;
 
     @Builder

@@ -4,14 +4,16 @@ import com.example.easybottest.dto.laptop.LaptopRequestDTO;
 import com.example.easybottest.dto.laptop.LaptopUpdateRequestDTO;
 import com.example.easybottest.model.Laptop;
 import com.example.easybottest.repository.LaptopRepository;
+import org.springdoc.api.OpenApiResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
-public class LaptopService extends ProductService<Laptop, LaptopRepository> {
+public class LaptopService implements ProductService<Laptop, LaptopRepository> {
     private final LaptopRepository laptopRepository;
 
     public LaptopService(LaptopRepository laptopRepository) {
-        super(laptopRepository);
         this.laptopRepository = laptopRepository;
     }
 
@@ -40,5 +42,16 @@ public class LaptopService extends ProductService<Laptop, LaptopRepository> {
         laptop.setSize(updateRequest.getSize());
         laptop.setCount(updateRequest.getCount());
         return laptopRepository.save(laptop);
+    }
+
+    @Override
+    public Laptop getProductById(Long productId) {
+        return laptopRepository.findById(productId)
+                .orElseThrow(() -> new OpenApiResourceNotFoundException("Laptop not found with ID: " + productId));
+    }
+
+    @Override
+    public List<Laptop> findAll() {
+        return laptopRepository.findAll();
     }
 }

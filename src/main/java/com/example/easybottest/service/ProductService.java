@@ -6,19 +6,10 @@ import org.springdoc.api.OpenApiResourceNotFoundException;
 
 import java.util.List;
 
-public abstract class ProductService<T extends Product, E extends ProductRepository<T>> {
-    private final E productRepository;
-    public ProductService(E productRepository) {
-        this.productRepository = productRepository;
-    }
+public interface ProductService<T extends Product, E extends ProductRepository<T>> {
 
-    public T getProductById(Long productId) {
-        return productRepository.findById(productId)
-                .orElseThrow(() -> new OpenApiResourceNotFoundException("Desktop computer not found with ID: " + productId));
-    }
+    public T getProductById(Long productId);
 
-    public List<T> findAllProduct() {
-        return productRepository.findAll();
-    }
+    public List<T> findAll();
 
 }

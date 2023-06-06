@@ -6,6 +6,7 @@ import com.example.easybottest.dto.hardDisk.HardDiskUpdateRequestDTO;
 import com.example.easybottest.model.HardDisk;
 import com.example.easybottest.service.HardDiskService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,12 +16,9 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/hardDisks")
+@RequiredArgsConstructor
 public class HardDiskController {
     private final HardDiskService hardDiskService;
-
-    public HardDiskController(HardDiskService hardDiskService) {
-        this.hardDiskService = hardDiskService;
-    }
 
     @PostMapping
     public ResponseEntity<HardDiskResponseDTO> createHardDisk(
@@ -48,7 +46,7 @@ public class HardDiskController {
 
     @GetMapping
     public ResponseEntity<List<HardDiskResponseDTO>> findAll() {
-        List<HardDisk> hardDisks = hardDiskService.findAllProduct();
+        List<HardDisk> hardDisks = hardDiskService.findAll();
         List<HardDiskResponseDTO> hardDiskResponseDTOs = hardDisks.stream()
                 .map(this::convertToHardDiskResponseDTO)
                 .collect(Collectors.toList());

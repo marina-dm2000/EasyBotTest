@@ -6,6 +6,7 @@ import com.example.easybottest.dto.screen.ScreenUpdateRequestDTO;
 import com.example.easybottest.model.Screen;
 import com.example.easybottest.service.ScreenService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,12 +16,9 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/screens")
+@RequiredArgsConstructor
 public class ScreenController {
     private final ScreenService screenService;
-
-    public ScreenController(ScreenService screenService) {
-        this.screenService = screenService;
-    }
 
     @PostMapping
     public ResponseEntity<ScreenResponseDTO> createScreen(
@@ -48,7 +46,7 @@ public class ScreenController {
 
     @GetMapping
     public ResponseEntity<List<ScreenResponseDTO>> findAll() {
-        List<Screen> screens = screenService.findAllProduct();
+        List<Screen> screens = screenService.findAll();
         List<ScreenResponseDTO> screenResponseDTOs = screens.stream()
                 .map(this::convertToScreenResponseDTO)
                 .collect(Collectors.toList());

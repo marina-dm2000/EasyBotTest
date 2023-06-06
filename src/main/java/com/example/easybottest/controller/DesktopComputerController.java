@@ -6,6 +6,7 @@ import com.example.easybottest.dto.desktopComputer.DesktopComputerUpdateRequestD
 import com.example.easybottest.model.DesktopComputer;
 import com.example.easybottest.service.DesktopComputerService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,12 +16,9 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/desktops")
+@RequiredArgsConstructor
 public class DesktopComputerController {
     private final DesktopComputerService desktopComputerService;
-
-    public DesktopComputerController(DesktopComputerService desktopComputerService) {
-        this.desktopComputerService = desktopComputerService;
-    }
 
     @PostMapping
     public ResponseEntity<DesktopComputerResponseDTO> createDesktopComputer(
@@ -48,7 +46,7 @@ public class DesktopComputerController {
 
     @GetMapping
     public ResponseEntity<List<DesktopComputerResponseDTO>> findAll() {
-        List<DesktopComputer> desktopComputers = desktopComputerService.findAllProduct();
+        List<DesktopComputer> desktopComputers = desktopComputerService.findAll();
         List<DesktopComputerResponseDTO> desktopComputerResponseDTOs = desktopComputers.stream()
                 .map(this::convertToDesktopResponseDTO)
                 .collect(Collectors.toList());

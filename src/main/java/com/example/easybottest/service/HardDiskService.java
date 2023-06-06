@@ -4,15 +4,17 @@ import com.example.easybottest.dto.hardDisk.HardDiskRequestDTO;
 import com.example.easybottest.dto.hardDisk.HardDiskUpdateRequestDTO;
 import com.example.easybottest.model.HardDisk;
 import com.example.easybottest.repository.HardDiskRepository;
+import org.springdoc.api.OpenApiResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
-public class HardDiskService extends ProductService<HardDisk, HardDiskRepository> {
+public class HardDiskService implements ProductService<HardDisk, HardDiskRepository> {
 
     private final HardDiskRepository hardDiskRepository;
 
     public HardDiskService(HardDiskRepository hardDiskRepository) {
-        super(hardDiskRepository);
         this.hardDiskRepository = hardDiskRepository;
     }
 
@@ -41,5 +43,16 @@ public class HardDiskService extends ProductService<HardDisk, HardDiskRepository
         hardDisk.setVolume(updateRequest.getVolume());
         hardDisk.setCount(updateRequest.getCount());
         return hardDiskRepository.save(hardDisk);
+    }
+
+    @Override
+    public HardDisk getProductById(Long productId) {
+        return hardDiskRepository.findById(productId)
+                .orElseThrow(() -> new OpenApiResourceNotFoundException("Hard disk not found with ID: " + productId));
+    }
+
+    @Override
+    public List<HardDisk> findAll() {
+        return hardDiskRepository.findAll();
     }
 }

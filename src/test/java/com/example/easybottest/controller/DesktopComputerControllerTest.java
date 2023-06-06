@@ -1,20 +1,24 @@
 package com.example.easybottest.controller;
 
+import com.example.easybottest.dto.desktopComputer.DesktopComputerRequestDTO;
 import com.example.easybottest.model.DesktopComputer;
+import com.example.easybottest.model.FormFactor;
 import com.example.easybottest.service.DesktopComputerService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@RunWith(SpringRunner.class)
 @WebMvcTest(DesktopComputerController.class)
 public class DesktopComputerControllerTest {
     @Autowired
@@ -25,14 +29,18 @@ public class DesktopComputerControllerTest {
 
     @Test
     public void testCreateDesktopComputer() throws Exception {
+        DesktopComputer desktopComputer = desktopComputerService.createDesktopComputer(
+                DesktopComputerRequestDTO
+                        .builder()
+                        .serialNumber(7474646L)
+                        .fabricator("Russia")
+                        .price(67)
+                        .formFactor(FormFactor.MONOBLOCK)
+                        .count(5).build());
+
+        given(desktopComputer).willReturn(desktopComputer);
         mockMvc.perform(post("/api/desktops")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{" +
-                                "\"serialNumber\": 7857575," +
-                                " \"fabricator\": \"Russia\", " +
-                                "\"price\": 46.5," +
-                                "\"formFactor\": \"DESKTOP\"," +
-                                "\"count\": 5}"))
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated());
     }
 

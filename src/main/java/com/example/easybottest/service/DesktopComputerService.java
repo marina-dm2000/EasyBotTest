@@ -4,14 +4,16 @@ import com.example.easybottest.dto.desktopComputer.DesktopComputerRequestDTO;
 import com.example.easybottest.dto.desktopComputer.DesktopComputerUpdateRequestDTO;
 import com.example.easybottest.model.DesktopComputer;
 import com.example.easybottest.repository.DesktopComputerRepository;
+import org.springdoc.api.OpenApiResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
-public class DesktopComputerService extends ProductService<DesktopComputer, DesktopComputerRepository> {
+public class DesktopComputerService implements ProductService<DesktopComputer, DesktopComputerRepository> {
     private final DesktopComputerRepository desktopComputerRepository;
 
     public DesktopComputerService(DesktopComputerRepository desktopComputerRepository) {
-        super(desktopComputerRepository);
         this.desktopComputerRepository = desktopComputerRepository;
     }
 
@@ -40,5 +42,16 @@ public class DesktopComputerService extends ProductService<DesktopComputer, Desk
         desktop.setFormFactor(updateRequest.getFormFactor());
         desktop.setCount(updateRequest.getCount());
         return desktopComputerRepository.save(desktop);
+    }
+
+    @Override
+    public DesktopComputer getProductById(Long productId) {
+        return desktopComputerRepository.findById(productId)
+                .orElseThrow(() -> new OpenApiResourceNotFoundException("Desktop computer not found with ID: " + productId));
+    }
+
+    @Override
+    public List<DesktopComputer> findAll() {
+        return desktopComputerRepository.findAll();
     }
 }
