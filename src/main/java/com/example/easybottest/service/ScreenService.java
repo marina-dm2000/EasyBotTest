@@ -1,18 +1,17 @@
 package com.example.easybottest.service;
 
-import com.example.easybottest.dto.screen.ScreenRequestDTO;
+import com.example.easybottest.dto.ScreenRequestDTO;
 import com.example.easybottest.model.ProductType;
 import com.example.easybottest.model.Screen;
 import com.example.easybottest.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.api.OpenApiResourceNotFoundException;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
+@org.springframework.stereotype.Service
 @RequiredArgsConstructor
-public class ScreenService implements SomeService<Screen> {
+public class ScreenService implements Service<Screen> {
     private final ProductRepository<Screen> screenRepository;
 
     public Screen save(Screen screen) {

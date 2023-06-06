@@ -1,7 +1,6 @@
 package com.example.easybottest.controller;
 
-import com.example.easybottest.dto.laptop.LaptopRequestDTO;
-import com.example.easybottest.dto.laptop.LaptopResponseDTO;
+import com.example.easybottest.dto.LaptopRequestDTO;
 import com.example.easybottest.model.Laptop;
 import com.example.easybottest.service.LaptopService;
 import lombok.RequiredArgsConstructor;
@@ -25,49 +24,31 @@ public class LaptopController {
     private final LaptopService laptopService;
 
     @PostMapping
-    public ResponseEntity<LaptopResponseDTO> createLaptop(
+    public ResponseEntity<Laptop> createLaptop(
             @RequestBody LaptopRequestDTO laptopRequestDTO) {
         checkRequest(laptopRequestDTO);
         Laptop laptop = laptopService.createLaptop(laptopRequestDTO);
-        LaptopResponseDTO responseDTO = convertToLaptopResponseDTO(laptop);
-        return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(laptop);
     }
 
     @PatchMapping("/{laptopId}")
-    public ResponseEntity<LaptopResponseDTO> updateLaptop(
+    public ResponseEntity<Laptop> updateLaptop(
             @PathVariable Long laptopId,
             @RequestBody LaptopRequestDTO updateRequest) {
         Laptop updatedLaptop = laptopService.updateLaptop(laptopId, updateRequest);
-        LaptopResponseDTO laptopResponseDTO = convertToLaptopResponseDTO(updatedLaptop);
-        return ResponseEntity.ok(laptopResponseDTO);
+        return ResponseEntity.ok(updatedLaptop);
     }
 
     @GetMapping("/{laptopId}")
-    public ResponseEntity<LaptopResponseDTO> findLaptopById(@PathVariable Long laptopId) {
+    public ResponseEntity<Laptop> findLaptopById(@PathVariable Long laptopId) {
         Laptop laptop = laptopService.getProductById(laptopId);
-        LaptopResponseDTO laptopResponseDTO = convertToLaptopResponseDTO(laptop);
-        return ResponseEntity.ok(laptopResponseDTO);
+        return ResponseEntity.ok(laptop);
     }
 
     @GetMapping
-    public ResponseEntity<List<LaptopResponseDTO>> findAll() {
+    public ResponseEntity<List<Laptop>> findAll() {
         List<Laptop> laptops = laptopService.findAll();
-        List<LaptopResponseDTO> laptopResponseDTOs = laptops.stream()
-                .map(LaptopController::convertToLaptopResponseDTO)
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(laptopResponseDTOs);
-    }
-
-    private static LaptopResponseDTO convertToLaptopResponseDTO(Laptop laptop) {
-        return LaptopResponseDTO.
-                builder()
-                .id(laptop.getId())
-                .serialNumber(laptop.getSerialNumber())
-                .fabricator(laptop.getFabricator())
-                .price(laptop.getPrice())
-                .size(laptop.getSize())
-                .count(laptop.getCount())
-                .build();
+        return ResponseEntity.ok(laptops);
     }
 
     private static void checkRequest(LaptopRequestDTO laptopRequestDTO) {

@@ -1,18 +1,17 @@
 package com.example.easybottest.service;
 
-import com.example.easybottest.dto.laptop.LaptopRequestDTO;
+import com.example.easybottest.dto.LaptopRequestDTO;
 import com.example.easybottest.model.Laptop;
 import com.example.easybottest.model.ProductType;
 import com.example.easybottest.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.api.OpenApiResourceNotFoundException;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
+@org.springframework.stereotype.Service
 @RequiredArgsConstructor
-public class LaptopService implements SomeService<Laptop> {
+public class LaptopService implements Service<Laptop> {
     private final ProductRepository<Laptop> laptopRepository;
 
     public Laptop createLaptop(

@@ -5,16 +5,15 @@ import com.example.easybottest.model.ProductType;
 import com.example.easybottest.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.api.OpenApiResourceNotFoundException;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
 
-@Service
+@org.springframework.stereotype.Service
 @RequiredArgsConstructor
 public class ProductService {
     private final ProductRepository<Product> productRepository;
-    private final Map<ProductType, SomeService<?>> productMap;
+    private final Map<ProductType, Service<?>> productMap;
 
     public Product getProductById(Long productId) {
         return productRepository.findById(productId)

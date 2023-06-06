@@ -1,7 +1,6 @@
 package com.example.easybottest.controller;
 
-import com.example.easybottest.dto.hardDisk.HardDiskRequestDTO;
-import com.example.easybottest.dto.hardDisk.HardDiskResponseDTO;
+import com.example.easybottest.dto.HardDiskRequestDTO;
 import com.example.easybottest.model.HardDisk;
 import com.example.easybottest.service.HardDiskService;
 import lombok.RequiredArgsConstructor;
@@ -25,49 +24,31 @@ public class HardDiskController {
     private final HardDiskService hardDiskService;
 
     @PostMapping
-    public ResponseEntity<HardDiskResponseDTO> createHardDisk(
+    public ResponseEntity<HardDisk> createHardDisk(
             @RequestBody HardDiskRequestDTO hardDiskRequestDTO) {
         checkRequest(hardDiskRequestDTO);
         HardDisk hardDisk = hardDiskService.createHardDisk(hardDiskRequestDTO);
-        HardDiskResponseDTO responseDTO = convertToHardDiskResponseDTO(hardDisk);
-        return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(hardDisk);
     }
 
     @PatchMapping("/{hardDiskId}")
-    public ResponseEntity<HardDiskResponseDTO> updateHardDisk(
+    public ResponseEntity<HardDisk> updateHardDisk(
             @PathVariable Long hardDiskId,
             @RequestBody HardDiskRequestDTO updateRequest) {
         HardDisk updatedHardDisk = hardDiskService.updateHardDisk(hardDiskId, updateRequest);
-        HardDiskResponseDTO hardDiskResponseDTO = convertToHardDiskResponseDTO(updatedHardDisk);
-        return ResponseEntity.ok(hardDiskResponseDTO);
+        return ResponseEntity.ok(updatedHardDisk);
     }
 
     @GetMapping("/{hardDiskId}")
-    public ResponseEntity<HardDiskResponseDTO> findHardDiskById(@PathVariable Long hardDiskId) {
+    public ResponseEntity<HardDisk> findHardDiskById(@PathVariable Long hardDiskId) {
         HardDisk hardDisk = hardDiskService.getProductById(hardDiskId);
-        HardDiskResponseDTO hardDiskResponseDTO = convertToHardDiskResponseDTO(hardDisk);
-        return ResponseEntity.ok(hardDiskResponseDTO);
+        return ResponseEntity.ok(hardDisk);
     }
 
     @GetMapping
-    public ResponseEntity<List<HardDiskResponseDTO>> findAll() {
+    public ResponseEntity<List<HardDisk>> findAll() {
         List<HardDisk> hardDisks = hardDiskService.findAll();
-        List<HardDiskResponseDTO> hardDiskResponseDTOs = hardDisks.stream()
-                .map(HardDiskController::convertToHardDiskResponseDTO)
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(hardDiskResponseDTOs);
-    }
-
-    private static HardDiskResponseDTO convertToHardDiskResponseDTO(HardDisk hardDisk) {
-        return HardDiskResponseDTO.
-                builder()
-                .id(hardDisk.getId())
-                .serialNumber(hardDisk.getSerialNumber())
-                .fabricator(hardDisk.getFabricator())
-                .price(hardDisk.getPrice())
-                .volume(hardDisk.getVolume())
-                .count(hardDisk.getCount())
-                .build();
+        return ResponseEntity.ok(hardDisks);
     }
 
     private static void checkRequest(HardDiskRequestDTO hardDiskRequestDTO) {

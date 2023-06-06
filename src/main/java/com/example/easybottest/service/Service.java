@@ -5,7 +5,7 @@ import com.example.easybottest.model.ProductType;
 
 import java.util.List;
 
-public interface SomeService<T extends Product> {
+public interface Service<T extends Product> {
 
     T getProductById(Long productId);
 
