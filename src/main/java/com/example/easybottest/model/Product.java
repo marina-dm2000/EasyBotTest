@@ -1,8 +1,6 @@
 package com.example.easybottest.model;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.DiscriminatorColumn;
-import jakarta.persistence.DiscriminatorType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,9 +19,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Table(name = "product")
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "product_type",
-        discriminatorType = DiscriminatorType.STRING)
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

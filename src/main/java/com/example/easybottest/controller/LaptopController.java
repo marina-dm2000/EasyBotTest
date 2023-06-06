@@ -1,15 +1,19 @@
 package com.example.easybottest.controller;
 
-import com.example.easybottest.dto.hardDisk.HardDiskRequestDTO;
 import com.example.easybottest.dto.laptop.LaptopRequestDTO;
 import com.example.easybottest.dto.laptop.LaptopResponseDTO;
 import com.example.easybottest.model.Laptop;
 import com.example.easybottest.service.LaptopService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,7 +26,7 @@ public class LaptopController {
 
     @PostMapping
     public ResponseEntity<LaptopResponseDTO> createLaptop(
-            @Valid @RequestBody LaptopRequestDTO laptopRequestDTO) {
+            @RequestBody LaptopRequestDTO laptopRequestDTO) {
         checkRequest(laptopRequestDTO);
         Laptop laptop = laptopService.createLaptop(laptopRequestDTO);
         LaptopResponseDTO responseDTO = convertToLaptopResponseDTO(laptop);
@@ -32,7 +36,7 @@ public class LaptopController {
     @PatchMapping("/{laptopId}")
     public ResponseEntity<LaptopResponseDTO> updateLaptop(
             @PathVariable Long laptopId,
-            @Valid @RequestBody LaptopRequestDTO updateRequest) {
+            @RequestBody LaptopRequestDTO updateRequest) {
         Laptop updatedLaptop = laptopService.updateLaptop(laptopId, updateRequest);
         LaptopResponseDTO laptopResponseDTO = convertToLaptopResponseDTO(updatedLaptop);
         return ResponseEntity.ok(laptopResponseDTO);

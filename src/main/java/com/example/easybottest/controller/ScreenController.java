@@ -4,11 +4,16 @@ import com.example.easybottest.dto.screen.ScreenRequestDTO;
 import com.example.easybottest.dto.screen.ScreenResponseDTO;
 import com.example.easybottest.model.Screen;
 import com.example.easybottest.service.ScreenService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,7 +26,7 @@ public class ScreenController {
 
     @PostMapping
     public ResponseEntity<ScreenResponseDTO> createScreen(
-            @Valid @RequestBody ScreenRequestDTO screenRequestDTO) {
+            @RequestBody ScreenRequestDTO screenRequestDTO) {
         checkRequest(screenRequestDTO);
         Screen screen = screenService.createScreen(screenRequestDTO);
         ScreenResponseDTO responseDTO = convertToScreenResponseDTO(screen);
@@ -31,7 +36,7 @@ public class ScreenController {
     @PatchMapping("/{screenId}")
     public ResponseEntity<ScreenResponseDTO> updateScreen(
             @PathVariable Long screenId,
-            @Valid @RequestBody ScreenRequestDTO updateRequest) {
+            @RequestBody ScreenRequestDTO updateRequest) {
         Screen updatedScreen = screenService.updateScreen(screenId, updateRequest);
         ScreenResponseDTO screenResponseDTO = convertToScreenResponseDTO(updatedScreen);
         return ResponseEntity.ok(screenResponseDTO);

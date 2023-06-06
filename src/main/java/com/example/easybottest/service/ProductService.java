@@ -25,8 +25,8 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    public List<Product> hetBySerialNumber(Long serialNumber) {
-        return productRepository.findBySerialNumber(serialNumber);
+    public <T extends Product> List<T> getBySerialNumber(Long serialNumber) {
+        return (List<T>) productRepository.findBySerialNumber(serialNumber);
     }
 
     public <T extends Product> List<T> getAllByProductType(ProductType productType) {

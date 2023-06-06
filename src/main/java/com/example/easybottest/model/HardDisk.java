@@ -2,7 +2,6 @@ package com.example.easybottest.model;
 
 
 import jakarta.persistence.Column;
-import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,12 +9,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import static com.example.easybottest.model.ProductType.Constants.HARD_DISK_NAME;
-
 @Getter
 @Setter
 @Entity
-@DiscriminatorValue(HARD_DISK_NAME)
 @NoArgsConstructor
 @AllArgsConstructor
 public class HardDisk extends Product {

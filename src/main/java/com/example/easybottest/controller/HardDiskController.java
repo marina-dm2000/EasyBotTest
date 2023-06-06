@@ -4,11 +4,16 @@ import com.example.easybottest.dto.hardDisk.HardDiskRequestDTO;
 import com.example.easybottest.dto.hardDisk.HardDiskResponseDTO;
 import com.example.easybottest.model.HardDisk;
 import com.example.easybottest.service.HardDiskService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,7 +26,7 @@ public class HardDiskController {
 
     @PostMapping
     public ResponseEntity<HardDiskResponseDTO> createHardDisk(
-            @Valid @RequestBody HardDiskRequestDTO hardDiskRequestDTO) {
+            @RequestBody HardDiskRequestDTO hardDiskRequestDTO) {
         checkRequest(hardDiskRequestDTO);
         HardDisk hardDisk = hardDiskService.createHardDisk(hardDiskRequestDTO);
         HardDiskResponseDTO responseDTO = convertToHardDiskResponseDTO(hardDisk);
@@ -31,7 +36,7 @@ public class HardDiskController {
     @PatchMapping("/{hardDiskId}")
     public ResponseEntity<HardDiskResponseDTO> updateHardDisk(
             @PathVariable Long hardDiskId,
-            @Valid @RequestBody HardDiskRequestDTO updateRequest) {
+            @RequestBody HardDiskRequestDTO updateRequest) {
         HardDisk updatedHardDisk = hardDiskService.updateHardDisk(hardDiskId, updateRequest);
         HardDiskResponseDTO hardDiskResponseDTO = convertToHardDiskResponseDTO(updatedHardDisk);
         return ResponseEntity.ok(hardDiskResponseDTO);

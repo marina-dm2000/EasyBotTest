@@ -1,7 +1,5 @@
 package com.example.easybottest.dto.hardDisk;
 
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Data;
 

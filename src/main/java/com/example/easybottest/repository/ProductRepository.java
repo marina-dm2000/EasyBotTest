@@ -10,5 +10,5 @@ import java.util.List;
 @Repository
 public interface ProductRepository<T extends Product> extends JpaRepository<T, Long> {
     @Query("SELECT p FROM Product p WHERE p.serialNumber = ?1")
-    List<Product> findBySerialNumber(Long serialNumber);
+    List<T> findBySerialNumber(Long serialNumber);
 }

@@ -1,7 +1,6 @@
 package com.example.easybottest.dto.laptop;
 
 import com.example.easybottest.model.Size;
-import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Data;
 

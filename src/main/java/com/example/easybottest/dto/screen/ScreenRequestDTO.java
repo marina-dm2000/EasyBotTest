@@ -1,6 +1,5 @@
 package com.example.easybottest.dto.screen;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Data;
 
