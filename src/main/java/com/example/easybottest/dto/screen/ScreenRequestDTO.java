@@ -7,18 +7,13 @@ import lombok.Data;
 @Data
 @Builder
 public class ScreenRequestDTO {
-    @NotBlank
     private Long serialNumber;
 
-    @NotBlank
     private String fabricator;
 
-    @NotBlank
-    private double price;
+    private Double price;
 
-    @NotBlank
-    private int diagonal;
+    private Integer diagonal;
 
-    @NotBlank
-    private int count;
+    private Integer count;
 }

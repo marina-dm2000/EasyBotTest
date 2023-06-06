@@ -1,25 +1,19 @@
 package com.example.easybottest.service;
 
 import com.example.easybottest.dto.desktopComputer.DesktopComputerRequestDTO;
-import com.example.easybottest.dto.desktopComputer.DesktopComputerUpdateRequestDTO;
 import com.example.easybottest.model.DesktopComputer;
-import com.example.easybottest.repository.DesktopComputerRepository;
+import com.example.easybottest.model.ProductType;
+import com.example.easybottest.repository.ProductRepository;
+import lombok.RequiredArgsConstructor;
 import org.springdoc.api.OpenApiResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class DesktopComputerService implements ProductService<DesktopComputer, DesktopComputerRepository> {
-    private final DesktopComputerRepository desktopComputerRepository;
-
-    public DesktopComputerService(DesktopComputerRepository desktopComputerRepository) {
-        this.desktopComputerRepository = desktopComputerRepository;
-    }
-
-    public DesktopComputer save(DesktopComputer desktopComputer) {
-        return desktopComputerRepository.save(desktopComputer);
-    }
+@RequiredArgsConstructor
+public class DesktopComputerService implements SomeService<DesktopComputer> {
+    private final ProductRepository<DesktopComputer> desktopComputerRepository;
 
     public DesktopComputer createDesktopComputer(
             DesktopComputerRequestDTO desktopRequestDTO) {
@@ -35,12 +29,16 @@ public class DesktopComputerService implements ProductService<DesktopComputer, D
         return desktopComputerRepository.save(desktop);
     }
 
-    public DesktopComputer updateDesktop(Long desktopId, DesktopComputerUpdateRequestDTO updateRequest) {
+    public DesktopComputer updateDesktop(Long desktopId, DesktopComputerRequestDTO updateRequest) {
         DesktopComputer desktop = getProductById(desktopId);
-        desktop.setFabricator(updateRequest.getFabricator());
-        desktop.setPrice(updateRequest.getPrice());
-        desktop.setFormFactor(updateRequest.getFormFactor());
-        desktop.setCount(updateRequest.getCount());
+        if (updateRequest.getFabricator() != null)
+            desktop.setFabricator(updateRequest.getFabricator());
+        if (updateRequest.getPrice() != null)
+            desktop.setPrice(updateRequest.getPrice());
+        if (updateRequest.getFormFactor() != null)
+            desktop.setFormFactor(updateRequest.getFormFactor());
+        if (updateRequest.getCount() != null)
+            desktop.setCount(updateRequest.getCount());
         return desktopComputerRepository.save(desktop);
     }
 
@@ -53,5 +51,10 @@ public class DesktopComputerService implements ProductService<DesktopComputer, D
     @Override
     public List<DesktopComputer> findAll() {
         return desktopComputerRepository.findAll();
+    }
+
+    @Override
+    public ProductType getProductType() {
+        return ProductType.DESKTOP_COMPUTER;
     }
 }

@@ -2,7 +2,6 @@ package com.example.easybottest.controller;
 
 import com.example.easybottest.dto.hardDisk.HardDiskRequestDTO;
 import com.example.easybottest.dto.hardDisk.HardDiskResponseDTO;
-import com.example.easybottest.dto.hardDisk.HardDiskUpdateRequestDTO;
 import com.example.easybottest.model.HardDisk;
 import com.example.easybottest.service.HardDiskService;
 import jakarta.validation.Valid;
@@ -23,6 +22,7 @@ public class HardDiskController {
     @PostMapping
     public ResponseEntity<HardDiskResponseDTO> createHardDisk(
             @Valid @RequestBody HardDiskRequestDTO hardDiskRequestDTO) {
+        checkRequest(hardDiskRequestDTO);
         HardDisk hardDisk = hardDiskService.createHardDisk(hardDiskRequestDTO);
         HardDiskResponseDTO responseDTO = convertToHardDiskResponseDTO(hardDisk);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
@@ -31,7 +31,7 @@ public class HardDiskController {
     @PatchMapping("/{hardDiskId}")
     public ResponseEntity<HardDiskResponseDTO> updateHardDisk(
             @PathVariable Long hardDiskId,
-            @Valid @RequestBody HardDiskUpdateRequestDTO updateRequest) {
+            @Valid @RequestBody HardDiskRequestDTO updateRequest) {
         HardDisk updatedHardDisk = hardDiskService.updateHardDisk(hardDiskId, updateRequest);
         HardDiskResponseDTO hardDiskResponseDTO = convertToHardDiskResponseDTO(updatedHardDisk);
         return ResponseEntity.ok(hardDiskResponseDTO);
@@ -48,12 +48,12 @@ public class HardDiskController {
     public ResponseEntity<List<HardDiskResponseDTO>> findAll() {
         List<HardDisk> hardDisks = hardDiskService.findAll();
         List<HardDiskResponseDTO> hardDiskResponseDTOs = hardDisks.stream()
-                .map(this::convertToHardDiskResponseDTO)
+                .map(HardDiskController::convertToHardDiskResponseDTO)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(hardDiskResponseDTOs);
     }
 
-    private HardDiskResponseDTO convertToHardDiskResponseDTO(HardDisk hardDisk) {
+    private static HardDiskResponseDTO convertToHardDiskResponseDTO(HardDisk hardDisk) {
         return HardDiskResponseDTO.
                 builder()
                 .id(hardDisk.getId())
@@ -63,5 +63,14 @@ public class HardDiskController {
                 .volume(hardDisk.getVolume())
                 .count(hardDisk.getCount())
                 .build();
+    }
+
+    private static void checkRequest(HardDiskRequestDTO hardDiskRequestDTO) {
+        if (hardDiskRequestDTO.getPrice() == null
+                || hardDiskRequestDTO.getCount() == null
+                || hardDiskRequestDTO.getFabricator() == null
+                || hardDiskRequestDTO.getSerialNumber() == null
+                || hardDiskRequestDTO.getVolume() == null)
+            throw new IllegalArgumentException("one or more of fields is null");
     }
 }

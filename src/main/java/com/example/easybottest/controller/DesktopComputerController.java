@@ -2,14 +2,18 @@ package com.example.easybottest.controller;
 
 import com.example.easybottest.dto.desktopComputer.DesktopComputerRequestDTO;
 import com.example.easybottest.dto.desktopComputer.DesktopComputerResponseDTO;
-import com.example.easybottest.dto.desktopComputer.DesktopComputerUpdateRequestDTO;
 import com.example.easybottest.model.DesktopComputer;
 import com.example.easybottest.service.DesktopComputerService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,7 +26,8 @@ public class DesktopComputerController {
 
     @PostMapping
     public ResponseEntity<DesktopComputerResponseDTO> createDesktopComputer(
-            @Valid @RequestBody DesktopComputerRequestDTO desktopComputerRequestDTO) {
+            @RequestBody DesktopComputerRequestDTO desktopComputerRequestDTO) {
+        checkRequest(desktopComputerRequestDTO);
         DesktopComputer desktopComputer = desktopComputerService.createDesktopComputer(desktopComputerRequestDTO);
         DesktopComputerResponseDTO responseDTO = convertToDesktopResponseDTO(desktopComputer);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
@@ -31,7 +36,7 @@ public class DesktopComputerController {
     @PatchMapping("/{desktopId}")
     public ResponseEntity<DesktopComputerResponseDTO> updateDesktop(
             @PathVariable Long desktopId,
-            @Valid @RequestBody DesktopComputerUpdateRequestDTO updateRequest) {
+            @RequestBody DesktopComputerRequestDTO updateRequest) {
         DesktopComputer updatedDesktop = desktopComputerService.updateDesktop(desktopId, updateRequest);
         DesktopComputerResponseDTO desktopResponseDTO = convertToDesktopResponseDTO(updatedDesktop);
         return ResponseEntity.ok(desktopResponseDTO);
@@ -48,12 +53,12 @@ public class DesktopComputerController {
     public ResponseEntity<List<DesktopComputerResponseDTO>> findAll() {
         List<DesktopComputer> desktopComputers = desktopComputerService.findAll();
         List<DesktopComputerResponseDTO> desktopComputerResponseDTOs = desktopComputers.stream()
-                .map(this::convertToDesktopResponseDTO)
+                .map(DesktopComputerController::convertToDesktopResponseDTO)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(desktopComputerResponseDTOs);
     }
 
-    private DesktopComputerResponseDTO convertToDesktopResponseDTO(DesktopComputer desktopComputer) {
+    private static DesktopComputerResponseDTO convertToDesktopResponseDTO(DesktopComputer desktopComputer) {
         return DesktopComputerResponseDTO.
                 builder()
                 .id(desktopComputer.getId())
@@ -63,5 +68,14 @@ public class DesktopComputerController {
                 .formFactor(desktopComputer.getFormFactor())
                 .count(desktopComputer.getCount())
                 .build();
+    }
+
+    private static void checkRequest(DesktopComputerRequestDTO desktopComputerRequestDTO) {
+        if (desktopComputerRequestDTO.getPrice() == null
+                || desktopComputerRequestDTO.getCount() == null
+                || desktopComputerRequestDTO.getFabricator() == null
+                || desktopComputerRequestDTO.getSerialNumber() == null
+                || desktopComputerRequestDTO.getFormFactor() == null)
+            throw new IllegalArgumentException("one or more of fields is null");
     }
 }

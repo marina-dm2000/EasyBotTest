@@ -1,5 +1,6 @@
 package com.example.easybottest.dto.hardDisk;
 
+import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Data;
@@ -7,18 +8,14 @@ import lombok.Data;
 @Data
 @Builder
 public class HardDiskRequestDTO {
-    @NotBlank
+
     private Long serialNumber;
 
-    @NotBlank
     private String fabricator;
 
-    @NotBlank
-    private double price;
+    private Double price;
 
-    @NotBlank
-    private int volume;
+    private Integer volume;
 
-    @NotBlank
-    private int count;
+    private Integer count;
 }

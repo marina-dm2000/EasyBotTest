@@ -1,25 +1,19 @@
 package com.example.easybottest.service;
 
 import com.example.easybottest.dto.laptop.LaptopRequestDTO;
-import com.example.easybottest.dto.laptop.LaptopUpdateRequestDTO;
 import com.example.easybottest.model.Laptop;
-import com.example.easybottest.repository.LaptopRepository;
+import com.example.easybottest.model.ProductType;
+import com.example.easybottest.repository.ProductRepository;
+import lombok.RequiredArgsConstructor;
 import org.springdoc.api.OpenApiResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class LaptopService implements ProductService<Laptop, LaptopRepository> {
-    private final LaptopRepository laptopRepository;
-
-    public LaptopService(LaptopRepository laptopRepository) {
-        this.laptopRepository = laptopRepository;
-    }
-
-    public Laptop save(Laptop laptop) {
-        return laptopRepository.save(laptop);
-    }
+@RequiredArgsConstructor
+public class LaptopService implements SomeService<Laptop> {
+    private final ProductRepository<Laptop> laptopRepository;
 
     public Laptop createLaptop(
             LaptopRequestDTO laptopRequestDTO) {
@@ -35,12 +29,16 @@ public class LaptopService implements ProductService<Laptop, LaptopRepository> {
         return laptopRepository.save(laptop);
     }
 
-    public Laptop updateLaptop(Long laptopId, LaptopUpdateRequestDTO updateRequest) {
+    public Laptop updateLaptop(Long laptopId, LaptopRequestDTO updateRequest) {
         Laptop laptop = getProductById(laptopId);
-        laptop.setFabricator(updateRequest.getFabricator());
-        laptop.setPrice(updateRequest.getPrice());
-        laptop.setSize(updateRequest.getSize());
-        laptop.setCount(updateRequest.getCount());
+        if (updateRequest.getFabricator() != null)
+            laptop.setFabricator(updateRequest.getFabricator());
+        if (updateRequest.getPrice() != null)
+            laptop.setPrice(updateRequest.getPrice());
+        if (updateRequest.getSize() != null)
+            laptop.setSize(updateRequest.getSize());
+        if (updateRequest.getCount() != null)
+            laptop.setCount(updateRequest.getCount());
         return laptopRepository.save(laptop);
     }
 
@@ -53,5 +51,10 @@ public class LaptopService implements ProductService<Laptop, LaptopRepository> {
     @Override
     public List<Laptop> findAll() {
         return laptopRepository.findAll();
+    }
+
+    @Override
+    public ProductType getProductType() {
+        return ProductType.LAPTOP;
     }
 }

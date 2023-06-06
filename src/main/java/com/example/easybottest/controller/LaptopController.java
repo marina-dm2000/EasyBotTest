@@ -1,8 +1,8 @@
 package com.example.easybottest.controller;
 
+import com.example.easybottest.dto.hardDisk.HardDiskRequestDTO;
 import com.example.easybottest.dto.laptop.LaptopRequestDTO;
 import com.example.easybottest.dto.laptop.LaptopResponseDTO;
-import com.example.easybottest.dto.laptop.LaptopUpdateRequestDTO;
 import com.example.easybottest.model.Laptop;
 import com.example.easybottest.service.LaptopService;
 import jakarta.validation.Valid;
@@ -23,6 +23,7 @@ public class LaptopController {
     @PostMapping
     public ResponseEntity<LaptopResponseDTO> createLaptop(
             @Valid @RequestBody LaptopRequestDTO laptopRequestDTO) {
+        checkRequest(laptopRequestDTO);
         Laptop laptop = laptopService.createLaptop(laptopRequestDTO);
         LaptopResponseDTO responseDTO = convertToLaptopResponseDTO(laptop);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
@@ -31,7 +32,7 @@ public class LaptopController {
     @PatchMapping("/{laptopId}")
     public ResponseEntity<LaptopResponseDTO> updateLaptop(
             @PathVariable Long laptopId,
-            @Valid @RequestBody LaptopUpdateRequestDTO updateRequest) {
+            @Valid @RequestBody LaptopRequestDTO updateRequest) {
         Laptop updatedLaptop = laptopService.updateLaptop(laptopId, updateRequest);
         LaptopResponseDTO laptopResponseDTO = convertToLaptopResponseDTO(updatedLaptop);
         return ResponseEntity.ok(laptopResponseDTO);
@@ -48,12 +49,12 @@ public class LaptopController {
     public ResponseEntity<List<LaptopResponseDTO>> findAll() {
         List<Laptop> laptops = laptopService.findAll();
         List<LaptopResponseDTO> laptopResponseDTOs = laptops.stream()
-                .map(this::convertToLaptopResponseDTO)
+                .map(LaptopController::convertToLaptopResponseDTO)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(laptopResponseDTOs);
     }
 
-    private LaptopResponseDTO convertToLaptopResponseDTO(Laptop laptop) {
+    private static LaptopResponseDTO convertToLaptopResponseDTO(Laptop laptop) {
         return LaptopResponseDTO.
                 builder()
                 .id(laptop.getId())
@@ -63,5 +64,14 @@ public class LaptopController {
                 .size(laptop.getSize())
                 .count(laptop.getCount())
                 .build();
+    }
+
+    private static void checkRequest(LaptopRequestDTO laptopRequestDTO) {
+        if (laptopRequestDTO.getPrice() == null
+                || laptopRequestDTO.getCount() == null
+                || laptopRequestDTO.getFabricator() == null
+                || laptopRequestDTO.getSerialNumber() == null
+                || laptopRequestDTO.getSize() == null)
+            throw new IllegalArgumentException("one or more of fields is null");
     }
 }

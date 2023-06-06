@@ -8,18 +8,13 @@ import lombok.Data;
 @Data
 @Builder
 public class LaptopRequestDTO {
-    @NotBlank
     private Long serialNumber;
 
-    @NotBlank
     private String fabricator;
 
-    @NotBlank
-    private double price;
+    private Double price;
 
-    @NotBlank
     private Size size;
 
-    @NotBlank
-    private int count;
+    private Integer count;
 }

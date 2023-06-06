@@ -1,21 +1,19 @@
 package com.example.easybottest.service;
 
 import com.example.easybottest.dto.screen.ScreenRequestDTO;
-import com.example.easybottest.dto.screen.ScreenUpdateRequestDTO;
+import com.example.easybottest.model.ProductType;
 import com.example.easybottest.model.Screen;
-import com.example.easybottest.repository.ScreenRepository;
+import com.example.easybottest.repository.ProductRepository;
+import lombok.RequiredArgsConstructor;
 import org.springdoc.api.OpenApiResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class ScreenService implements ProductService<Screen, ScreenRepository> {
-    private final ScreenRepository screenRepository;
-
-    public ScreenService(ScreenRepository screenRepository) {
-        this.screenRepository = screenRepository;
-    }
+@RequiredArgsConstructor
+public class ScreenService implements SomeService<Screen> {
+    private final ProductRepository<Screen> screenRepository;
 
     public Screen save(Screen screen) {
         return screenRepository.save(screen);
@@ -35,12 +33,16 @@ public class ScreenService implements ProductService<Screen, ScreenRepository> {
         return screenRepository.save(screen);
     }
 
-    public Screen updateScreen(Long screenId, ScreenUpdateRequestDTO updateRequest) {
+    public Screen updateScreen(Long screenId, ScreenRequestDTO updateRequest) {
         Screen screen = getProductById(screenId);
-        screen.setFabricator(updateRequest.getFabricator());
-        screen.setPrice(updateRequest.getPrice());
-        screen.setDiagonal(updateRequest.getDiagonal());
-        screen.setCount(updateRequest.getCount());
+        if (updateRequest.getFabricator() != null)
+            screen.setFabricator(updateRequest.getFabricator());
+        if (updateRequest.getPrice() != null)
+            screen.setPrice(updateRequest.getPrice());
+        if (updateRequest.getDiagonal() != null)
+            screen.setDiagonal(updateRequest.getDiagonal());
+        if (updateRequest.getCount() != null)
+            screen.setCount(updateRequest.getCount());
         return screenRepository.save(screen);
     }
 
@@ -53,5 +55,10 @@ public class ScreenService implements ProductService<Screen, ScreenRepository> {
     @Override
     public List<Screen> findAll() {
         return screenRepository.findAll();
+    }
+
+    @Override
+    public ProductType getProductType() {
+        return ProductType.SCREEN;
     }
 }

@@ -2,7 +2,6 @@ package com.example.easybottest.controller;
 
 import com.example.easybottest.dto.screen.ScreenRequestDTO;
 import com.example.easybottest.dto.screen.ScreenResponseDTO;
-import com.example.easybottest.dto.screen.ScreenUpdateRequestDTO;
 import com.example.easybottest.model.Screen;
 import com.example.easybottest.service.ScreenService;
 import jakarta.validation.Valid;
@@ -23,6 +22,7 @@ public class ScreenController {
     @PostMapping
     public ResponseEntity<ScreenResponseDTO> createScreen(
             @Valid @RequestBody ScreenRequestDTO screenRequestDTO) {
+        checkRequest(screenRequestDTO);
         Screen screen = screenService.createScreen(screenRequestDTO);
         ScreenResponseDTO responseDTO = convertToScreenResponseDTO(screen);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
@@ -31,7 +31,7 @@ public class ScreenController {
     @PatchMapping("/{screenId}")
     public ResponseEntity<ScreenResponseDTO> updateScreen(
             @PathVariable Long screenId,
-            @Valid @RequestBody ScreenUpdateRequestDTO updateRequest) {
+            @Valid @RequestBody ScreenRequestDTO updateRequest) {
         Screen updatedScreen = screenService.updateScreen(screenId, updateRequest);
         ScreenResponseDTO screenResponseDTO = convertToScreenResponseDTO(updatedScreen);
         return ResponseEntity.ok(screenResponseDTO);
@@ -48,12 +48,12 @@ public class ScreenController {
     public ResponseEntity<List<ScreenResponseDTO>> findAll() {
         List<Screen> screens = screenService.findAll();
         List<ScreenResponseDTO> screenResponseDTOs = screens.stream()
-                .map(this::convertToScreenResponseDTO)
+                .map(ScreenController::convertToScreenResponseDTO)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(screenResponseDTOs);
     }
 
-    private ScreenResponseDTO convertToScreenResponseDTO(Screen screen) {
+    private static ScreenResponseDTO convertToScreenResponseDTO(Screen screen) {
         return ScreenResponseDTO.
                 builder()
                 .id(screen.getId())
@@ -63,5 +63,14 @@ public class ScreenController {
                 .diagonal(screen.getDiagonal())
                 .count(screen.getCount())
                 .build();
+    }
+
+    private static void checkRequest(ScreenRequestDTO screenRequestDTO) {
+        if (screenRequestDTO.getPrice() == null
+                || screenRequestDTO.getCount() == null
+                || screenRequestDTO.getFabricator() == null
+                || screenRequestDTO.getSerialNumber() == null
+                || screenRequestDTO.getDiagonal() == null)
+            throw new IllegalArgumentException("one or more of fields is null");
     }
 }

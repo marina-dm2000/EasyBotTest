@@ -1,26 +1,20 @@
 package com.example.easybottest.service;
 
 import com.example.easybottest.dto.hardDisk.HardDiskRequestDTO;
-import com.example.easybottest.dto.hardDisk.HardDiskUpdateRequestDTO;
 import com.example.easybottest.model.HardDisk;
-import com.example.easybottest.repository.HardDiskRepository;
+import com.example.easybottest.model.ProductType;
+import com.example.easybottest.repository.ProductRepository;
+import lombok.RequiredArgsConstructor;
 import org.springdoc.api.OpenApiResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class HardDiskService implements ProductService<HardDisk, HardDiskRepository> {
+@RequiredArgsConstructor
+public class HardDiskService implements SomeService<HardDisk> {
 
-    private final HardDiskRepository hardDiskRepository;
-
-    public HardDiskService(HardDiskRepository hardDiskRepository) {
-        this.hardDiskRepository = hardDiskRepository;
-    }
-
-    public HardDisk save(HardDisk hardDisk) {
-        return hardDiskRepository.save(hardDisk);
-    }
+    private final ProductRepository<HardDisk> hardDiskRepository;
 
     public HardDisk createHardDisk(
             HardDiskRequestDTO hardDiskRequestDTO) {
@@ -36,12 +30,16 @@ public class HardDiskService implements ProductService<HardDisk, HardDiskReposit
         return hardDiskRepository.save(hardDisk);
     }
 
-    public HardDisk updateHardDisk(Long hardDiskId, HardDiskUpdateRequestDTO updateRequest) {
+    public HardDisk updateHardDisk(Long hardDiskId, HardDiskRequestDTO updateRequest) {
         HardDisk hardDisk = getProductById(hardDiskId);
-        hardDisk.setFabricator(updateRequest.getFabricator());
-        hardDisk.setPrice(updateRequest.getPrice());
-        hardDisk.setVolume(updateRequest.getVolume());
-        hardDisk.setCount(updateRequest.getCount());
+        if (updateRequest.getFabricator() != null)
+            hardDisk.setFabricator(updateRequest.getFabricator());
+        if (updateRequest.getPrice() != null)
+            hardDisk.setPrice(updateRequest.getPrice());
+        if (updateRequest.getVolume() != null)
+            hardDisk.setVolume(updateRequest.getVolume());
+        if (updateRequest.getCount() != null)
+            hardDisk.setCount(updateRequest.getCount());
         return hardDiskRepository.save(hardDisk);
     }
 
@@ -54,5 +52,10 @@ public class HardDiskService implements ProductService<HardDisk, HardDiskReposit
     @Override
     public List<HardDisk> findAll() {
         return hardDiskRepository.findAll();
+    }
+
+    @Override
+    public ProductType getProductType() {
+        return ProductType.HARD_DISK;
     }
 }
